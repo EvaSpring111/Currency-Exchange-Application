@@ -9,10 +9,13 @@ export class CurrencyApiDataService {
 
   constructor( private http: HttpClient ) { }
 
+  getCurrency(){
+    let url = environment.exchangeRatesAPIUrl;
+    return this.http.get(url);
+  } 
   getCurrencyData(country1: any){
     let url = `${environment.exchangeRatesAPIUrl}${country1}`;
     return this.http.get(url);
-    
   }
 
   getTodatRate(){

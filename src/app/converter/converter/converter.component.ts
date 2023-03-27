@@ -25,7 +25,7 @@ export class ConverterComponent implements ControlValueAccessor {
 
   private amounts: number = 0;
   currjson:  CurrencyRates = {} as CurrencyRates;
-
+  currency: any = [];
   result: number = 0;
   // currencyFROM: string = '';
   // amounts: number = 0;
@@ -33,10 +33,22 @@ export class ConverterComponent implements ControlValueAccessor {
 
   constructor(private cADService: CurrencyApiDataService) { }
 
+  ngOnInit(){
+    this.getSelectedCurrancy()
+  }
+
+  getSelectedCurrancy(){
+    this.cADService.getCurrency().subscribe(item => {
+
+      this.currjson = JSON.parse(JSON.stringify(item));
+      this.currency = Object.keys(this.currjson.rates);
+      console.log(this.currency)
+     } )
+  }
 
   form = new FormGroup({
-    currencyFROM: new FormControl('', Validators.required,),
-    currencyTO: new FormControl('', Validators.required,),
+    currencyFROM: new FormControl('UAH', Validators.required,),
+    currencyTO: new FormControl('USD', Validators.required,),
     amounts: new FormControl(0, [
       Validators.required,
     ]),
@@ -85,37 +97,13 @@ export class ConverterComponent implements ControlValueAccessor {
 
   onSubmits() {
     this.cADService.getCurrencyData(this.form.value.currencyFROM).subscribe(data => {
-      // console.log( 'first', this.currjson);
       this.currjson = JSON.parse(JSON.stringify(data));
-      // console.log('data', data);
-      // console.log( 'last', this.currjson);
-
-      if (this.form.value.currencyTO === 'USD') {
-        this.form.value.result = this.currjson.rates.USD * (this.form.value.amounts!);
-        // console.log(this.form.value.result);
-      } else if (this.form.value.currencyTO === 'BTC') {
-        this.form.value.result = this.currjson.rates.BTC * (this.form.value.amounts!);
-        // console.log(this.form.value.result);
-      } else if (this.form.value.currencyTO === 'GBR') {
-        this.form.value.result = this.currjson.rates.GBP * (this.form.value.amounts!);
-        // console.log(this.form.value.result);
-      } else if (this.form.value.currencyTO === 'EUR') {
-        this.form.value.result = this.currjson.rates.EUR * (this.form.value.amounts!);
-        // console.log(this.form.value.result);
-      } else if (this.form.value.currencyTO === 'CNY') {
-        this.form.value.result = this.currjson.rates.CNY * (this.form.value.amounts!);
-        // console.log(this.form.value.result);
-      }
+      let key = this.form.value.currencyTO;
+      key ? this.form.value.result = this.currjson.rates[key] * (this.form.value.amounts!) : console.log('Error!');
     })
   }
 
-  currency: Currency[] = [
-    { name: 'Dollar USA', abbrev: 'USD', symbol: ' $' },
-    { name: 'Bitcoin', abbrev: 'BTC', symbol: ' B'  },
-    { name: 'Euro', abbrev: 'EUR', symbol: ' €'  },
-    { name: 'British pound sterling', abbrev: 'GBR', symbol: ' £'  },
-    { name: 'Chinese Yuan', abbrev: 'CNY', symbol: ' ¥'  },
-  ];
+
 
 }
 

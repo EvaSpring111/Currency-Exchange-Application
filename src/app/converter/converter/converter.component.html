@@ -20,8 +20,8 @@
                             class="border border-2 border-dark rounded mt-1">
                                 <option value="">I exchange from:  </option>
                                 <option *ngFor="let itemFROM of currency" 
-                                [value]="itemFROM.abbrev">
-                                    {{ itemFROM.abbrev }}{{ itemFROM.symbol }}
+                                [value]="itemFROM">
+                                    {{ itemFROM}}
                                 </option>
                         </select>
                     </div>    
@@ -85,8 +85,8 @@
                             class="border border-2 border-dark rounded">
                                 <option value="">I exchange to:  </option>
                                 <option *ngFor="let itemTO of currency" 
-                                [value]="itemTO.abbrev">
-                                    {{ itemTO.abbrev }}{{ itemTO.symbol }}
+                                [value]="itemTO">
+                                    {{ itemTO}}
                                 </option>
                         </select>
                     </div>
