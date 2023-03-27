@@ -1,5 +1,5 @@
 # CurrencyExchange
-https://evaspring111.github.io/Currency-Exchange-Application/
+https://evaspring111.github.io/LiveExchange/
 
 
 ## Development server
